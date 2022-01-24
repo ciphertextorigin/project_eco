@@ -1,7 +1,7 @@
 [![Run tests on any Push event](https://github.com/cforcross/toney_int/actions/workflows/test.yml/badge.svg)](https://github.com/cforcross/toney_int/actions/workflows/test.yml)
 
 ### Setup For Server
-- My Server has been build Using Flask 
+- Build the Web Server using Flask. 
 
 
 - creat virtual env
