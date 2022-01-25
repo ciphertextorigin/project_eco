@@ -1,10 +1,14 @@
 name: Publish on Docker Hub and Deploy
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [master ]
+  workflow_dispatch:
 
 jobs:
+
   run_pub_tests:
     runs-on: [ubuntu-latest]
     steps:
@@ -25,18 +29,9 @@ jobs:
   build_and_pub:
     needs: [run_pub_tests]
     runs-on: [ubuntu-latest]
-    env:
-      LOGIN: ${{ secrets.DOCKER_USER }}
-      NAME: ${{ secrets.DOCKER_NAME }}
     steps:
-      - name: Login to docker.io
-        run:  echo ${{ secrets.DOCKER_PASS }} | docker login --username ${{ secrets.DOCKER_USER }} --password-stdin
-      - uses: actions/checkout@master
-      - name: Build image
-        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:10} -f Dockerfile .
-      - name: Push image tag to docker.io
-        run: docker push $LOGIN/$NAME:${GITHUB_REF:10}
-      - name: Tag last release as latest
-        run: docker tag $LOGIN/$NAME:${GITHUB_REF:10} $LOGIN/$NAME:latest
-      - name: Push image tag latest to docker.io
-        run: docker push $LOGIN/$NAME:latest
+    - uses: actions/checkout@master
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile -- tag ijn35807/docker-image-autobuild:latest
+    - name: Push the Docker image
+      run: docker login -u 2021202121202120 -p ${{ secrets.DOCKER_TOKEN }} && docker push 2021202121202120/docker-image-autobuild:latest
