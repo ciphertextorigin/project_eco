@@ -26,13 +26,13 @@ jobs:
         run: coverage run src/app_test.py
       - name: Tests report
         run: coverage report
-  build_and_pub:
+  build:
     needs: [run_pub_tests]
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
-    - name: Build the Docker image
+    - name: Build & Push Image
       run:  |
        echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "2021202121202120" --password-stdin
-       docker image build -t 2021202121202120/docker-image-autobuild:latest 
-       docker push 2021202121202120/docker-image-autobuild:latest
+       docker image build -t 2021202121202120/webserver:v1 . 
+       docker push 2021202121202120/webserver:v1
