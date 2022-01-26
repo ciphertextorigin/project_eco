@@ -57,3 +57,6 @@ So we can access our app from http://local.ecosia.org/tree
 - `chmod u+x build-and-deploy.sh`
 - then
 - `./build-and-deploy.sh`
+
+## Configure github actions
+Configure github actions to build image, push to dockerhub and run deployment script.
