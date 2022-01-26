@@ -32,6 +32,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Build the Docker image
-      run: docker build . --file Dockerfile -- tag 2021202121202120/docker-image-autobuild:latest
-    - name: Push the Docker image
-      run: docker login -u 2021202121202120 -p ${{ secrets.DOCKER_TOKEN }} && docker push 2021202121202120/docker-image-autobuild:latest
+      run:  |
+       echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "2021202121202120" --password-stdin
+       docker image build -t 2021202121202120/docker-image-autobuild:latest 
+       docker push 2021202121202120/docker-image-autobuild:latest
